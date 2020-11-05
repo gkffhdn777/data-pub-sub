@@ -10,12 +10,8 @@ import java.util.Objects;
 import com.coding.kko.file.Cache;
 import com.coding.kko.file.OutputFile;
 import com.coding.kko.file.WordsFile;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public final class OutputWordFile implements OutputFile<WordsFile> {
-
-	private static final Logger logger = LoggerFactory.getLogger(OutputWordFile.class);
 
 	private final Cache<String> snapshot;
 
@@ -28,7 +24,6 @@ public final class OutputWordFile implements OutputFile<WordsFile> {
 		if (wordsFile == null) {
 			return;
 		}
-		logger.info("write file {}", wordsFile);
 		var path = Paths.get(wordsFile.getDirectoryPath() + "/" + wordsFile.getFileName() + ".txt");
 		try (var fw = new FileWriter(path.toFile(), true);
 			 var bw = new BufferedWriter(fw);
