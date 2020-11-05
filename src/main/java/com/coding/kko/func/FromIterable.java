@@ -35,6 +35,7 @@ public class FromIterable<T> extends Mono<T> {
 
 					if (canceled.get()) {
 						subscriber.onComplete();
+						canceled.set(Boolean.FALSE);
 						return;
 					}
 
