@@ -9,12 +9,8 @@ import java.util.stream.IntStream;
 
 import com.coding.kko.file.FileService;
 import com.coding.kko.func.CoreSubscriber;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public final class WriteConsumer implements CoreSubscriber<String> {
-
-	private static final Logger logger = LoggerFactory.getLogger(WriteConsumer.class);
 
 	private final Partition<String> partitionQueue;
 

@@ -1,18 +1,7 @@
 package com.coding.kko;
 
 import java.util.Scanner;
-import java.util.function.Predicate;
-import java.util.regex.Pattern;
 
-import com.coding.kko.consumer.Partition;
-import com.coding.kko.consumer.WriteConsumer;
-import com.coding.kko.file.Cache;
-import com.coding.kko.file.FileService;
-import com.coding.kko.infra.cache.Snapshot;
-import com.coding.kko.infra.io.InputWordFile;
-import com.coding.kko.infra.io.OutputWordFile;
-import com.coding.kko.infra.partition.PartitionQueue;
-import com.coding.kko.producer.ReadProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,30 +9,9 @@ public class Application {
 
 	private static final Logger logger = LoggerFactory.getLogger(Application.class);
 
-	private static final Cache<String> SNAPSHOT = new Snapshot<>();
-
 	public static void main(String[] args) {
 		final var request = userRequest();
-		final Predicate<String> valid = (validWord) -> Pattern.matches("([a-zA-Z0-9]{0})\\w+.*", validWord);
-		applicationStart(valid, request, 5);
-	}
-
-	private static void applicationStart(
-			final Predicate<String> validWord,
-			final UserRequest request,
-			final long backpressureSize) {
-
-		final Partition<String> partition = new PartitionQueue<>(request.getPartition());
-
-		new ReadProducer(new InputWordFile(validWord))
-				.sendWord(request.getFileName())
-				.addQueue(partition)
-				.subscribe(
-						new WriteConsumer(
-								partition,
-								request.getPartition(),
-								new FileService(new OutputWordFile(SNAPSHOT), request.getDirectoryPath()),
-								backpressureSize));
+		CodingTaskApplication.run(request);
 	}
 
 	private static UserRequest userRequest() {
