@@ -23,7 +23,7 @@ public final class CodingTaskApplication {
 
 		final Partition<String> partition = new PartitionQueue<>(request.getPartition());
 		final Predicate<String> validWord = (word) -> Pattern.matches("([a-zA-Z0-9]{0})\\w+.*", word);
-		final long backpressureSize = 10;
+		final long backpressureSize = 100;
 
 		new ReadProducer(new InputWordFile(validWord))
 				.sendWord(request.getFileName())
